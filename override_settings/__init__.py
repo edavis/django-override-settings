@@ -2,6 +2,12 @@ from __future__ import with_statement
 from django.conf import settings, UserSettingsHolder
 from django.utils.functional import wraps
 
+class DeletedSettingDescriptor(object):
+    def __get__(self, instance, owner):
+        raise AttributeError("attribute not set")
+
+SETTING_DELETED = DeletedSettingDescriptor()
+
 # Backported from Django trunk (r16377)
 class override_settings(object):
     """
