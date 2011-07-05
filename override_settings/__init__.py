@@ -53,3 +53,21 @@ class override_settings(object):
 
     def disable(self):
         settings._wrapped = self.wrapped
+
+def with_apps(*apps):
+    """
+    Class decorator that makes sure the passed apps are present in
+    INSTALLED_APPS.
+    """
+    apps_set = set(settings.INSTALLED_APPS)
+    apps_set.update(apps)
+    return override_settings(INSTALLED_APPS=list(apps_set))
+
+
+def without_apps(*apps):
+    """
+    Class decorator that makes sure the passed apps are not present in
+    INSTALLED_APPS.
+    """
+    apps_list = [a for a in settings.INSTALLED_APPS if a not in apps]
+    return override_settings(INSTALLED_APPS=apps_list)
