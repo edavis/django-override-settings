@@ -10,7 +10,7 @@ method decorator or as a context manager to temporarily override the
 values of settings.  After each test case has finished (when using it
 as a decorator) or after the context manager has exited, it resets the
 values in ``django.conf.settings`` to what they were before.  This prevents
-side-effects from creeping and lets each test case run in its own
+side-effects from creeping in and lets each test case run in its own
 sandbox.
 
 This package also provides two convenience functions (``with_apps``
