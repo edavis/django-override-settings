@@ -62,6 +62,7 @@ class TestAppModifiers(TestCase):
         """
         self.assertFalse('django.contrib.sites' in settings.INSTALLED_APPS)
 
+@override_settings(DUMMY_OPTION=42)
 class TestSettingDeleted(TestCase):
     def test_dummy_option_exists(self):
         """
