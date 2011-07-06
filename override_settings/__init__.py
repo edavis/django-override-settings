@@ -2,11 +2,7 @@ from __future__ import with_statement
 from django.conf import settings, UserSettingsHolder
 from django.utils.functional import wraps
 
-class DeletedSettingDescriptor(object):
-    def __get__(self, instance, owner):
-        raise AttributeError("attribute not set")
-
-SETTING_DELETED = DeletedSettingDescriptor()
+SETTING_DELETED = object()
 
 # Backported from Django trunk (r16377)
 class override_settings(object):
@@ -46,10 +42,10 @@ class override_settings(object):
         return inner
 
     def enable(self):
-        override = UserSettingsHolder(settings._wrapped)
-        for key, new_value in self.options.items():
-            setattr(override, key, new_value)
-        settings._wrapped = override
+        settings._wrapped = None
+        new = [(k, v) for (k, v) in self.options.iteritems() \
+                   if v is not SETTING_DELETED]
+        settings.configure(**dict(new))
 
     def disable(self):
         settings._wrapped = self.wrapped
@@ -62,7 +58,6 @@ def with_apps(*apps):
     apps_set = set(settings.INSTALLED_APPS)
     apps_set.update(apps)
     return override_settings(INSTALLED_APPS=list(apps_set))
-
 
 def without_apps(*apps):
     """
