@@ -71,7 +71,7 @@ class TestSettingDeleted(TestCase):
         self.assertEqual(settings.DUMMY_OPTION, 42)
 
         with override_settings(DUMMY_OPTION=SETTING_DELETED):
-            self.assertRaises(AttributeError, lambda: settings.DUMMY_OPTION)
+            self.assertRaises(AttributeError, getattr, settings, 'DUMMY_OPTION')
 
         self.assertEqual(settings.DUMMY_OPTION, 42)
 
@@ -80,7 +80,7 @@ class TestSettingDeleted(TestCase):
         """
         Can delete settings at the method level.
         """
-        self.assertRaises(AttributeError, lambda: settings.DUMMY_OPTION)
+        self.assertRaises(AttributeError, getattr, settings, 'DUMMY_OPTION')
 
     def test_dummy_option_exists_after_method_level_delete(self):
         """
