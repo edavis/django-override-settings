@@ -87,3 +87,16 @@ class TestSettingDeleted(TestCase):
         Make sure the option returns after deleting it at the method level.
         """
         self.assertEqual(settings.DUMMY_OPTION, 42)
+
+class TestGlobalSettingsUnaffected(TestCase):
+    @override_settings(DUMMY_OPTION=42)
+    def test_global_settings_are_unaffected(self):
+        """
+        Ensure global settings aren't touched.
+
+        We don't want the passed options to be the *only* settings
+        set.  We check here for USE_ETAGS, defined in
+        django.conf.global_settings and untouched by override_settings.
+        """
+        self.assertEqual(settings.DUMMY_OPTION, 42)
+        self.assertTrue('USE_ETAGS' in dir(settings))
