@@ -29,6 +29,12 @@ class TestOverrideSettingsDecoratedClass(TestCase):
         with override_settings(FOO="xyz"):
             self.assertEqual(settings.FOO, "xyz")
 
+    def test_decorated_testcase_module(self):
+        """
+        Make sure __name__ is correctly reported.
+        """
+        self.assertEqual(TestOverrideSettingsDecoratedClass.__module__, __name__)
+
 class TestOverrideSettingsUndecoratedClass(TestCase):
     """
     Provide an undecorated class.
