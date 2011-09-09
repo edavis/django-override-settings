@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name             = "django-override-settings",
-    version          = "1.1",
+    version          = "1.1.1",
     author           = "Eric Davis",
     author_email     = "ed@npri.org",
     description      = "Provide a way to override Django's settings when running tests",
@@ -12,7 +12,7 @@ setup(
     url              = "http://github.com/edavis/django-override-settings/",
     packages         = ['override_settings'],
     classifiers      = [
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Framework :: Django",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
