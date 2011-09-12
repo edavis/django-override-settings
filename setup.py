@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name             = "django-override-settings",
-    version          = "1.1.1",
+    version          = "1.2",
     author           = "Eric Davis",
     author_email     = "ed@npri.org",
     description      = "Provide a way to override Django's settings when running tests",

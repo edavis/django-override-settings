@@ -1,4 +1,4 @@
-Version 1.X
+Version 1.2
 -----------
 * Much more robust handling of SETTING_DELETED
 
