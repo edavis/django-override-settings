@@ -1,4 +1,5 @@
 from __future__ import with_statement
+import copy
 from django.conf import settings, UserSettingsHolder
 from django.utils.functional import wraps
 
@@ -52,10 +53,16 @@ class override_settings(object):
         return inner
 
     def enable(self):
-        settings._wrapped = None
-        new = [(k, v) for (k, v) in self.options.iteritems() \
-                   if v is not SETTING_DELETED]
-        settings.configure(**dict(new))
+        override = UserSettingsHolder(copy.copy(settings._wrapped))
+        for key, new_value in self.options.iteritems():
+            if new_value is SETTING_DELETED:
+                try:
+                    delattr(override.default_settings, key)
+                except AttributeError:
+                    pass
+            else:
+                setattr(override, key, new_value)
+        settings._wrapped = override
 
     def disable(self):
         settings._wrapped = self.wrapped
