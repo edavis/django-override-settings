@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 from distutils.core import setup, Command
 
 cmdclass = {}
@@ -19,7 +20,7 @@ class TestCommand(Command):
 
     def run(self):
         from override_settings.run_tests import run_tests
-        run_tests(self.verbosity)
+        sys.exit(run_tests(self.verbosity))
 
 cmdclass['test'] = TestCommand
 
