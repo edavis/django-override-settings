@@ -60,12 +60,17 @@ class TestOverrideSettingsUndecoratedClass(TestCase):
         self.assertRaises(AttributeError, getattr, settings, "FOO")
 
 class TestAppModifiers(TestCase):
-    @with_apps('django.contrib.sites')
+    """
+    Test the with and without apps decorators.
+
+    These are helper decorators to just alter INSTALLED_APPS.
+    """
+    @with_apps('django.contrib.webdesign')
     def test_with_apps(self):
         """
         The `with_apps` decorator adds apps to INSTALLED_APPS.
         """
-        self.assertTrue('django.contrib.sites' in settings.INSTALLED_APPS)
+        self.assertTrue('django.contrib.webdesign' in settings.INSTALLED_APPS)
 
     @without_apps("django.contrib.sites")
     def test_without_apps(self):
