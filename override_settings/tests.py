@@ -118,6 +118,54 @@ class TestSettingDeleted(TestCase):
         """
         self.assertEqual(settings.DUMMY_OPTION, 42)
 
+class TestSettingDeletedUndecoratedClass(TestCase):
+    """
+    Like above, but only delete settings at the method/context manager
+    level.
+    """
+    @override_settings(DUMMY_OPTION=42)
+    def test_setting_comes_back_after_context_manager(self):
+        """
+        Deleted options should return after the context manager is finished.
+        """
+        self.assertEqual(settings.DUMMY_OPTION, 42)
+
+        with override_settings(DUMMY_OPTION=SETTING_DELETED):
+            self.assertRaises(AttributeError, getattr, settings, 'DUMMY_OPTION')
+
+        self.assertEqual(settings.DUMMY_OPTION, 42)
+
+    @override_settings(DUMMY_OPTION=SETTING_DELETED)
+    def test_delete_dummy_option(self):
+        """
+        Can delete settings at the method level.
+        """
+        self.assertRaises(AttributeError, getattr, settings, 'DUMMY_OPTION')
+
+@override_settings(USER_ID=SETTING_DELETED)
+class TestSettingDeletedDecoratedClass(TestCase):
+    """
+    settings.USER_ID is gone for all tests.
+
+    Test various ways to temporarily add it back.
+    """
+    @override_settings(USER_ID=1)
+    def test_set_user_id(self):
+        self.assertEqual(settings.USER_ID, 1)
+
+    def test_set_user_id_in_context_manager(self):
+        """
+        settings.USER_ID only exists in the context manager.
+
+        Kind of a mirror image of TestSettingsDeleted.test_dummy_option_exists.
+        """
+        self.assertRaises(AttributeError, getattr, settings, "USER_ID")
+
+        with override_settings(USER_ID=1):
+            self.assertEqual(settings.USER_ID, 1)
+
+        self.assertRaises(AttributeError, getattr, settings, "USER_ID")
+
 class TestGlobalSettingsUnaffected(TestCase):
     @override_settings(DUMMY_OPTION=42)
     def test_global_settings_are_unaffected(self):
