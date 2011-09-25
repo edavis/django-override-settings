@@ -79,6 +79,19 @@ class TestAppModifiers(TestCase):
         """
         self.assertFalse('django.contrib.sites' in settings.INSTALLED_APPS)
 
+    def test_with_and_without_apps_context_manager(self):
+        """
+        Make sure with and without apps work when used as context managers.
+        """
+        with with_apps('django.contrib.webdesign'):
+            self.assertTrue('django.contrib.webdesign' in settings.INSTALLED_APPS)
+        self.assertFalse('django.contrib.webdesign' in settings.INSTALLED_APPS)
+
+        # django.contrib.sites is included in test_settings.py
+        with without_apps('django.contrib.sites'):
+            self.assertFalse('django.contrib.sites' in settings.INSTALLED_APPS)
+        self.assertTrue('django.contrib.sites' in settings.INSTALLED_APPS)
+
 @override_settings(DUMMY_OPTION=42)
 class TestSettingDeleted(TestCase):
     def test_dummy_option_exists(self):
