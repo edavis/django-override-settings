@@ -3,6 +3,7 @@ Development
 * Test suite runs from setup.py now
 * Add tests for with/without apps when used as context managers
 * Test a few different permutations of SETTING_DELETED
+* Test different environments with tox
 
 Version 1.2
 -----------

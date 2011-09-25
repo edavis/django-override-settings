@@ -102,7 +102,7 @@ To run tests without a setting, use ``SETTING_DELETED``::
 Requirements
 ------------
 
-- Django >= 1.2
+Works on Python 2.6 and 2.7 with Django 1.2.x and 1.3.x
 
 Thanks
 ------
