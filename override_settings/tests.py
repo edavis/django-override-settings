@@ -53,6 +53,12 @@ class TestOverrideSettingsUndecoratedClass(TestCase):
         with override_settings(FOO="321"):
             self.assertEqual(settings.FOO, "321")
 
+    def test_undecorated_class_and_method_raises_exception(self):
+        """
+        Make sure settings.FOO isn't available unless set.
+        """
+        self.assertRaises(AttributeError, getattr, settings, "FOO")
+
 class TestAppModifiers(TestCase):
     @with_apps('django.contrib.sites')
     def test_with_apps(self):
