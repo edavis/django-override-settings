@@ -7,6 +7,3 @@ def run_tests(verbosity=1):
     from django.test.simple import DjangoTestSuiteRunner
     runner = DjangoTestSuiteRunner(verbosity=verbosity)
     return runner.run_tests(['override_settings'])
-
-if __name__ == "__main__":
-    main()
