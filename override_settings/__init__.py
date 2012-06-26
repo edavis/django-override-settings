@@ -7,7 +7,16 @@ SETTING_DELETED = mock.sentinel.SETTING_DELETED
 
 class override_settings(object):
     def __init__(self, **kwargs):
-        self.patcher = mock.patch('django.conf.settings._wrapped', **kwargs)
+        self.options = self.get_global_settings()
+        self.options.update(kwargs)
+        self.patcher = mock.patch.object(settings, '_wrapped', **self.options)
+
+    def get_global_settings(self):
+        """
+        Return a dictionary of all global_settings values.
+        """
+        return dict((key, getattr(global_settings, key)) for key in dir(global_settings)
+                    if key.isupper())
 
     def __call__(self, test_func):
         if isinstance(test_func, type):
