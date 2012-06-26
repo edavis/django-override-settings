@@ -48,6 +48,10 @@ class override_settings(object):
 
     def enable(self):
         self.mocked = self.patcher.start()
+        # Delete attributes set to SETTING_DELETED
+        for key, value in self.options.iteritems():
+            if value is SETTING_DELETED:
+                delattr(self.mocked, key)
         return self.mocked
 
     def disable(self):
