@@ -1,7 +1,6 @@
 import copy
 import mock
 from functools import wraps
-
 from django.conf import global_settings, settings
 
 SETTING_DELETED = mock.sentinel.SETTING_DELETED
