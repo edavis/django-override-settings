@@ -1,7 +1,11 @@
 #from django.conf import settings
 from override_settings import settings
 if not settings.configured:
-    settings.configure()
+    # Since this test suite is designed to be ran outside of ./manage.py test,
+    # we need to do some setup first.
+    #
+    # We use 'django.contrib.sites' for the without_apps context manager test.
+    settings.configure(INSTALLED_APPS=['django.contrib.sites'])
 
 import unittest
 from override_settings import (
