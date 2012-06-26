@@ -4,7 +4,7 @@ from functools import wraps
 
 from django.conf import global_settings, settings
 
-SETTING_DELETED = object()
+SETTING_DELETED = mock.sentinel.SETTING_DELETED
 
 class override_settings(object):
     def __init__(self, **kwargs):
