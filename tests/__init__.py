@@ -1,5 +1,4 @@
-#from django.conf import settings
-from override_settings import settings
+from django.conf import settings
 if not settings.configured:
     # Since this test suite is designed to be ran outside of ./manage.py test,
     # we need to do some setup first.
