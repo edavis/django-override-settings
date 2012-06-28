@@ -185,3 +185,12 @@ class TestGlobalSettingsUnaffected(unittest.TestCase):
         """
         self.assertEqual(settings.DUMMY_OPTION, 42)
         self.assertTrue('USE_ETAGS' in dir(settings))
+
+class TestMultipleSettingsAtOnce(unittest.TestCase):
+    @override_settings(OPTION_A=True)
+    def test_multiple_options(self):
+        self.assertEqual(settings.OPTION_A, True)
+        with override_settings(OPTION_B="abc", OPTION_A=False):
+            self.assertEqual(settings.OPTION_A, False)
+            self.assertEqual(settings.OPTION_B, "abc")
+        self.assertEqual(settings.OPTION_A, True)
