@@ -5,13 +5,13 @@ django-override-settings
 django-override-settings provides an easy way to override settings in
 Django tests.
 
-The ``override_settings`` class can be used as either a class or
-method decorator or as a context manager to temporarily override the
-values of settings.  After each test case has finished (when using it
-as a decorator) or after the context manager has exited, it resets the
-values in ``django.conf.settings`` to what they were before.  This prevents
-side-effects from creeping in and lets each test case run in its own
-sandbox.
+The ``override_settings`` class can be used as either a class/method
+decorator or as a context manager to temporarily override the values
+of settings. It works by creating a mock ``django.conf.settings``
+object with user-defined attributes. After each test has finished or
+the context manager has exited, it resets the values in
+``django.conf.settings`` so each test can run in its own sandbox
+without side-effects creeping in.
 
 This package also provides two convenience functions (``with_apps``
 and ``without_apps``) to modify just ``INSTALLED_APPS`` as well as a
@@ -102,7 +102,9 @@ To run tests without a setting, use ``SETTING_DELETED``::
 Requirements
 ------------
 
-Works on Python 2.6 and 2.7 with Django 1.2.x and 1.3.x
+Requires the development version of mock (``pip install mock==dev``)
+
+Works on Python 2.6 and 2.7 with Django 1.2 and 1.3
 
 Thanks
 ------
@@ -123,6 +125,6 @@ Thanks
 Contact
 -------
 
-If you notice any bugs, please `open a ticket`_.
+If you notice any bugs, please `file a ticket`_.
 
 .. _open a ticket: https://github.com/edavis/django-override-settings/issues
