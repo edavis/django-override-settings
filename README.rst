@@ -127,4 +127,4 @@ Contact
 
 If you notice any bugs, please `file a ticket`_.
 
-.. _open a ticket: https://github.com/edavis/django-override-settings/issues
+.. _file a ticket: https://github.com/edavis/django-override-settings/issues
