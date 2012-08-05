@@ -14,6 +14,7 @@ setup(
     long_description = open('README.rst').read(),
     url              = "http://github.com/edavis/django-override-settings/",
     packages         = ['override_settings'],
+    install_requires = ['mock==1.0b1'],
     classifiers      = [
         "Development Status :: 5 - Production/Stable",
         "Framework :: Django",
