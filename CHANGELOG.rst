@@ -1,9 +1,11 @@
 Development
 -----------
-* Test suite runs from setup.py now
+* Use mock to provide fake django.conf.settings object
+* Register with Travis CI
+* Move tests outside of package
+* Use tox to test various Python and Django versions
 * Add tests for with/without apps when used as context managers
 * Test a few different permutations of SETTING_DELETED
-* Test different environments with tox
 
 Version 1.2
 -----------
