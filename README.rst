@@ -2,6 +2,9 @@
 django-override-settings
 ========================
 
+.. image:: https://secure.travis-ci.org/edavis/django-override-settings.png
+   :target: http://travis-ci.org/#!/edavis/django-override-settings
+
 django-override-settings provides an easy way to override settings in
 Django tests.
 
