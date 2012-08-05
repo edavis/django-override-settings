@@ -105,9 +105,11 @@ To run tests without a setting, use ``SETTING_DELETED``::
 Requirements
 ------------
 
-Requires the development version of mock (``pip install mock==dev``)
+Works on Python versions 2.6 and 2.7 and with Django 1.2 through 1.4.
 
-Works on Python 2.6 and 2.7 with Django 1.2 and 1.3
+To run the test suite, you'll need tox_ (>= 1.4.2)
+
+.. _tox: http://pypi.python.org/pypi/tox
 
 Thanks
 ------
