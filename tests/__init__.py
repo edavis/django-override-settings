@@ -1,10 +1,18 @@
 from django.conf import settings
-from django.test import TestCase
+if not settings.configured:
+    # Since this test suite is designed to be ran outside of ./manage.py test,
+    # we need to do some setup first.
+    #
+    # We use 'django.contrib.sites' for the without_apps context manager test.
+    settings.configure(INSTALLED_APPS=['django.contrib.sites'])
+
+import unittest
 from override_settings import (
-    override_settings, SETTING_DELETED, with_apps, without_apps)
+    override_settings, SETTING_DELETED,
+    with_apps, without_apps)
 
 @override_settings(FOO="abc")
-class TestOverrideSettingsDecoratedClass(TestCase):
+class TestOverrideSettingsDecoratedClass(unittest.TestCase):
     """
     Provide a decorated class.
     """
@@ -35,7 +43,7 @@ class TestOverrideSettingsDecoratedClass(TestCase):
         """
         self.assertEqual(TestOverrideSettingsDecoratedClass.__module__, __name__)
 
-class TestOverrideSettingsUndecoratedClass(TestCase):
+class TestOverrideSettingsUndecoratedClass(unittest.TestCase):
     """
     Provide an undecorated class.
     """
@@ -59,7 +67,7 @@ class TestOverrideSettingsUndecoratedClass(TestCase):
         """
         self.assertRaises(AttributeError, getattr, settings, "FOO")
 
-class TestAppModifiers(TestCase):
+class TestAppModifiers(unittest.TestCase):
     """
     Test the with and without apps decorators.
 
@@ -87,13 +95,12 @@ class TestAppModifiers(TestCase):
             self.assertTrue('django.contrib.webdesign' in settings.INSTALLED_APPS)
         self.assertFalse('django.contrib.webdesign' in settings.INSTALLED_APPS)
 
-        # django.contrib.sites is included in test_settings.py
         with without_apps('django.contrib.sites'):
             self.assertFalse('django.contrib.sites' in settings.INSTALLED_APPS)
         self.assertTrue('django.contrib.sites' in settings.INSTALLED_APPS)
 
 @override_settings(DUMMY_OPTION=42)
-class TestSettingDeleted(TestCase):
+class TestSettingDeleted(unittest.TestCase):
     def test_dummy_option_exists(self):
         """
         Deleted options should return after the context manager is finished.
@@ -118,7 +125,7 @@ class TestSettingDeleted(TestCase):
         """
         self.assertEqual(settings.DUMMY_OPTION, 42)
 
-class TestSettingDeletedUndecoratedClass(TestCase):
+class TestSettingDeletedUndecoratedClass(unittest.TestCase):
     """
     Like above, but only delete settings at the method/context manager
     level.
@@ -143,7 +150,7 @@ class TestSettingDeletedUndecoratedClass(TestCase):
         self.assertRaises(AttributeError, getattr, settings, 'DUMMY_OPTION')
 
 @override_settings(USER_ID=SETTING_DELETED)
-class TestSettingDeletedDecoratedClass(TestCase):
+class TestSettingDeletedDecoratedClass(unittest.TestCase):
     """
     settings.USER_ID is gone for all tests.
 
@@ -166,7 +173,7 @@ class TestSettingDeletedDecoratedClass(TestCase):
 
         self.assertRaises(AttributeError, getattr, settings, "USER_ID")
 
-class TestGlobalSettingsUnaffected(TestCase):
+class TestGlobalSettingsUnaffected(unittest.TestCase):
     @override_settings(DUMMY_OPTION=42)
     def test_global_settings_are_unaffected(self):
         """
@@ -178,3 +185,12 @@ class TestGlobalSettingsUnaffected(TestCase):
         """
         self.assertEqual(settings.DUMMY_OPTION, 42)
         self.assertTrue('USE_ETAGS' in dir(settings))
+
+class TestMultipleSettingsAtOnce(unittest.TestCase):
+    @override_settings(OPTION_A=True)
+    def test_multiple_options(self):
+        self.assertEqual(settings.OPTION_A, True)
+        with override_settings(OPTION_B="abc", OPTION_A=False):
+            self.assertEqual(settings.OPTION_A, False)
+            self.assertEqual(settings.OPTION_B, "abc")
+        self.assertEqual(settings.OPTION_A, True)
